@@ -8,11 +8,11 @@ const photos = getPhotos();
 const photoFragment = document.createDocumentFragment();
 
 photos.forEach(({url, comments, likes}) => {
-const photoItem = pictureTemplate.cloneNode(true);
-photoItem.querySelector('.picture__img').src = url;
-photoItem.querySelector('.picture__comments').textContent = comments;
-photoItem.querySelector('.picture__likes').textContent = likes;
-photoFragment.append(photoItem);
+    const photoItem = pictureTemplate.cloneNode(true);
+    photoItem.querySelector('.picture__img').src = url;
+    photoItem.querySelector('.picture__comments').textContent = comments;
+    photoItem.querySelector('.picture__likes').textContent = likes;
+    photoFragment.append(photoItem);
 });
 
 const getPictures = () => {picturesContainer.append(photoFragment)};
