@@ -3,6 +3,6 @@
 import './utils.js';
 import './data.js';
 import './pictures.js';
-import {getPictures} from '/.pictures.js';
+import {renderPictures} from './pictures.js';
 
-getPictures();
+renderPictures();
