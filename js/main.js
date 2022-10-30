@@ -1,5 +1,8 @@
 
 
 import './utils.js';
-import {getPhotos} from './data.js';
-console.log(getPhotos());
+import './data.js';
+import './pictures.js';
+import {renderPictures} from './pictures.js';
+
+renderPictures();
