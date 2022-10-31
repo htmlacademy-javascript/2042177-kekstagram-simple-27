@@ -23,4 +23,6 @@ function getStringLength(testedString, maxLength) {
 
 getStringLength('djnkflksdjf', 75);
 
-export {getRandomInRange};
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export {getRandomInRange, isEscapeKey};
