@@ -1,4 +1,4 @@
-import {getRandomInRange} from './utils.js';
+import { getRandomInRange } from './utils.js';
 const PHOTO_COUNT = 25;
 const PHOTO_DESCRIPTION = ['Вид на пляж отеля.',
   'Указатель пути к пляжу',
@@ -43,4 +43,4 @@ function getPhotos() {
 }
 
 getPhotos();
-export {getPhotos};
+export { getPhotos };

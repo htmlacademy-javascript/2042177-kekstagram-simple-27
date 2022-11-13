@@ -1,19 +1,11 @@
-//import {previewImage} from "./scale.js";
+import { sliderPreview } from './scale.js';
 
 const sliderElement = document.querySelector('.effect-level__slider');
 const sliderValue = document.querySelector('.effect-level__value');
 const effectsElement = document.querySelector('.effects__list');
+const previewImage = sliderPreview.querySelector('img');
 
 const EFFECTS_SETTINGS = {
-  original: {
-    filter: 'none',
-    range: {
-      min: 0,
-      max: 100,
-    },
-    step: 1,
-    postfix: '',
-  },
   chrome: {
     filter: 'grayscale',
     range: {
@@ -61,8 +53,58 @@ const EFFECTS_SETTINGS = {
   },
 };
 
-noUiSlider.create(sliderElement, EFFECTS_SETTINGS.original);
+sliderElement.classList.add('hidden');
+
+noUiSlider.create(sliderElement, {
+  filter: 'none',
+  range: {
+    min: 0,
+    max: 100,
+  },
+  start: 100,
+  step: 1,
+  format: {
+    to: function (value) {
+      if (Number.isInteger(value)) {
+        return value.toFixed(0);
+      }
+      return value.toFixed(1);
+    },
+    from: function (value) {
+      if (Number.isInteger(value)) {
+        return value.toFixed(0);
+      }
+      return parseFloat(value).toFixed(1);
+    },
+  },
+});
 
 sliderElement.noUiSlider.on('update', () => {
-  sliderValue.value = sliderElement.noUiSlider.get();
-})
+  const currentValue = sliderElement.noUiSlider.get();
+  sliderValue.value = currentValue;
+  const effectsInput = effectsElement.querySelector('input:checked');
+  const checkedEffect = effectsInput.value;
+  if (checkedEffect !== 'none') {
+    const filterChecked = EFFECTS_SETTINGS[checkedEffect];
+    previewImage.style.filter = `${filterChecked.filter}(${currentValue}${filterChecked.postfix})`;
+  } else {
+    previewImage.style.filter = '';
+  }
+});
+
+effectsElement.addEventListener('change', (evt) => {
+  previewImage.classList = '';
+  if (evt.target.value === 'none') {
+    sliderElement.classList.add('hidden');
+    previewImage.style.filter = '';
+  } else {
+    sliderElement.classList.remove('hidden');
+    previewImage.classList.add(`effects__preview--${evt.target.value}`);
+    const currentFilter = EFFECTS_SETTINGS[evt.target.value];
+    sliderElement.noUiSlider.updateOptions({
+      range: currentFilter.range,
+      step: currentFilter.step,
+    });
+    sliderElement.noUiSlider.set(currentFilter.range.max);
+  }
+});
