@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions */
-import {isEscapeKey} from './utils.js';
+import { isEscapeKey } from './utils.js';
 
 const modalElement = document.querySelector('.img-upload__overlay');
 const modalOpenButton = document.querySelector('#upload-file');

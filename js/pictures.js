@@ -1,4 +1,4 @@
-import {getPhotos} from './data.js';
+import { getPhotos } from './data.js';
 
 const picturesContainer = document.querySelector ('.pictures');
 
@@ -22,4 +22,4 @@ const getPhotoFragment = () => {
 
 const renderPictures = () => picturesContainer.append(getPhotoFragment());
 
-export {renderPictures};
+export { renderPictures };
