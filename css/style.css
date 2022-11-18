@@ -1192,6 +1192,13 @@ main {
   transform: translateX(-50%);
 }
 
+.img-upload__error-message {
+  font-family: "Open Sans", "Arial", sans-serif;
+  text-align: center;
+  font-weight: 700;
+  color: #ffe753;
+  margin-bottom: 0;
+}
 
 /**
   * Экраны ошибки и успеха загрузки изображения

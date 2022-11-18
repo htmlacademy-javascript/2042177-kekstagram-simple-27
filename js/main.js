@@ -1,10 +1,15 @@
-import './upload-modal.js';
-import './form.js';
+import { closeModal } from './upload-modal.js';
+import { setUserFormSubmit } from './form.js';
 import './utils.js';
 import './data.js';
-import './pictures.js';
+import { renderPictures } from './pictures.js';
 import './scale.js';
 import './filters.js';
-import { renderPictures } from './pictures.js';
 
-renderPictures();
+fetch('https://27.javascript.pages.academy/kekstagram-simple/data')
+  .then((Response) => Response.json())
+  .then((photos) => {
+    renderPictures(photos);
+  });
+
+setUserFormSubmit(closeModal);
