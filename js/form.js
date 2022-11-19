@@ -1,3 +1,6 @@
+import { sendData } from "./api.js";
+import { showSuccessMessage, showErrorMessage } from "./messages.js";
+
 const comentLength = {MIN:20, MAX: 140};
 
 const form = document.querySelector('#upload-select-image');
@@ -15,16 +18,35 @@ function validateСomment (value) {
 
 pristine.addValidator(form.querySelector('.text__description'), validateСomment, `От ${comentLength.MIN} до ${comentLength.MAX} символов`);
 
+const submitButton = form.querySelector('.img-upload__submit');
+
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Сохраняю...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
 const setUserFormSubmit = (onSuccess) => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
     if (isValid) {
-      const formData = new FormData(evt.target);
-      fetch('https://27.javascript.pages.academy/kekstagram-simple', {
-        method: 'POST',
-        body: formData,
-      }).then(() => onSuccess());
+      blockSubmitButton();
+      sendData(() => {
+        onSuccess();
+        unblockSubmitButton();
+        showSuccessMessage();
+      },
+      () =>{
+        showErrorMessage();
+        unblockSubmitButton();
+      },
+      new FormData(evt.target),
+      );
     }
   });
 };
