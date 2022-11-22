@@ -1,12 +1,12 @@
-const picturesContainer = document.querySelector ('.pictures');
+const picturesContainerElement = document.querySelector ('.pictures');
 
 const getPhotoFragment = (data) => {
-  const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
+  const pictureTemplateElement = document.querySelector('#picture').content.querySelector('.picture');
 
   const photoFragment = document.createDocumentFragment();
 
   data.forEach(({ url, comments, likes }) => {
-    const photoItem = pictureTemplate.cloneNode(true);
+    const photoItem = pictureTemplateElement.cloneNode(true);
     photoItem.querySelector('.picture__img').src = url;
     photoItem.querySelector('.picture__comments').textContent = comments;
     photoItem.querySelector('.picture__likes').textContent = likes;
@@ -16,6 +16,6 @@ const getPhotoFragment = (data) => {
   return photoFragment;
 };
 
-const renderPictures = (data) => picturesContainer.append(getPhotoFragment(data));
+const renderPictures = (data) => picturesContainerElement.append(getPhotoFragment(data));
 
 export { renderPictures };

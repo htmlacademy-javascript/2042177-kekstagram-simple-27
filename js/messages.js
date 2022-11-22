@@ -1,4 +1,4 @@
-import { isEscapeKey } from "./utils.js";
+import { isEscapeKey } from './utils.js';
 
 const ERROR_SHOW_TIME = 5000;
 
@@ -19,18 +19,18 @@ const showMessage = (type) => {
       evt.preventDefault();
       closeMessage();
     }
-  };
+  }
   function onMessageClick(evt) {
     if (evt.target === message) {
       closeMessage();
     }
-  };
+  }
 
   document.addEventListener('keydown', onKeydown);
   message.addEventListener('click', onMessageClick);
   messageCloseButton.addEventListener('click', closeMessage);
   document.body.append(message);
-}
+};
 
 const showSuccessMessage = () => showMessage('success');
 const showErrorMessage = () => showMessage('error');
@@ -55,7 +55,5 @@ const showDataLoadError = (message) => {
     mistakeElement.remove();
   }, ERROR_SHOW_TIME);
 };
-
-
 
 export { showDataLoadError, showErrorMessage, showSuccessMessage };
