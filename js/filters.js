@@ -1,10 +1,3 @@
-import { sliderPreview } from './scale.js';
-
-const sliderElement = document.querySelector('.effect-level__slider');
-const sliderValue = document.querySelector('.effect-level__value');
-const effectsElement = document.querySelector('.effects__list');
-const previewImage = sliderPreview.querySelector('img');
-
 const EFFECTS_SETTINGS = {
   chrome: {
     filter: 'grayscale',
@@ -52,59 +45,68 @@ const EFFECTS_SETTINGS = {
     postfix: '',
   },
 };
+const sliderElement = document.querySelector('.effect-level__slider');
+const sliderValueElement = document.querySelector('.effect-level__value');
+const effectsElement = document.querySelector('.effects__list');
+const previewImageElement = document.querySelector('.img-upload__preview img');
+const sliderContainerElement = document.querySelector('.img-upload__effect-level');
 
-sliderElement.classList.add('hidden');
+const initFilters = () => {
+  sliderContainerElement.classList.add('hidden');
 
-noUiSlider.create(sliderElement, {
-  filter: 'none',
-  range: {
-    min: 0,
-    max: 100,
-  },
-  start: 100,
-  step: 1,
-  format: {
-    to: function (value) {
-      if (Number.isInteger(value)) {
-        return value.toFixed(0);
-      }
-      return value.toFixed(1);
+  noUiSlider.create(sliderElement, {
+    filter: 'none',
+    range: {
+      min: 0,
+      max: 100,
     },
-    from: function (value) {
-      if (Number.isInteger(value)) {
-        return value.toFixed(0);
-      }
-      return parseFloat(value).toFixed(1);
+    start: 100,
+    step: 1,
+    format: {
+      to: (value) => {
+        if (Number.isInteger(value)) {
+          return value.toFixed(0);
+        }
+        return value.toFixed(1);
+      },
+      from: (value) => {
+        if (Number.isInteger(value)) {
+          return value.toFixed(0);
+        }
+        return parseFloat(value).toFixed(1);
+      },
     },
-  },
-});
+  });
 
-sliderElement.noUiSlider.on('update', () => {
-  const currentValue = sliderElement.noUiSlider.get();
-  sliderValue.value = currentValue;
-  const effectsInput = effectsElement.querySelector('input:checked');
-  const checkedEffect = effectsInput.value;
-  if (checkedEffect !== 'none') {
-    const filterChecked = EFFECTS_SETTINGS[checkedEffect];
-    previewImage.style.filter = `${filterChecked.filter}(${currentValue}${filterChecked.postfix})`;
-  } else {
-    previewImage.style.filter = '';
-  }
-});
+  sliderElement.noUiSlider.on('update', () => {
+    const currentValue = sliderElement.noUiSlider.get();
+    sliderValueElement.value = currentValue;
+    const effectsInput = effectsElement.querySelector('input:checked');
+    const checkedEffect = effectsInput.value;
+    if (checkedEffect !== 'none') {
+      const filterChecked = EFFECTS_SETTINGS[checkedEffect];
+      previewImageElement.style.filter = `${filterChecked.filter}(${currentValue}${filterChecked.postfix})`;
+    } else {
+      previewImageElement.style.filter = '';
+    }
+  });
 
-effectsElement.addEventListener('change', (evt) => {
-  previewImage.classList = '';
-  if (evt.target.value === 'none') {
-    sliderElement.classList.add('hidden');
-    previewImage.style.filter = '';
-  } else {
-    sliderElement.classList.remove('hidden');
-    previewImage.classList.add(`effects__preview--${evt.target.value}`);
-    const currentFilter = EFFECTS_SETTINGS[evt.target.value];
-    sliderElement.noUiSlider.updateOptions({
-      range: currentFilter.range,
-      step: currentFilter.step,
-    });
-    sliderElement.noUiSlider.set(currentFilter.range.max);
-  }
-});
+  effectsElement.addEventListener('change', (evt) => {
+    previewImageElement.classList = '';
+    if (evt.target.value === 'none') {
+      sliderContainerElement.classList.add('hidden');
+      previewImageElement.style.filter = '';
+    } else {
+      sliderContainerElement.classList.remove('hidden');
+      previewImageElement.classList.add(`effects__preview--${evt.target.value}`);
+      const currentFilter = EFFECTS_SETTINGS[evt.target.value];
+      sliderElement.noUiSlider.updateOptions({
+        range: currentFilter.range,
+        step: currentFilter.step,
+      });
+      sliderElement.noUiSlider.set(currentFilter.range.max);
+    }
+  });
+};
+
+export { previewImageElement, sliderContainerElement, initFilters };

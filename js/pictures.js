@@ -1,16 +1,12 @@
-import { getPhotos } from './data.js';
+const picturesContainerElement = document.querySelector ('.pictures');
 
-const picturesContainer = document.querySelector ('.pictures');
-
-const getPhotoFragment = () => {
-  const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
-
-  const photos = getPhotos();
+const getPhotoFragment = (data) => {
+  const pictureTemplateElement = document.querySelector('#picture').content.querySelector('.picture');
 
   const photoFragment = document.createDocumentFragment();
 
-  photos.forEach(({ url, comments, likes }) => {
-    const photoItem = pictureTemplate.cloneNode(true);
+  data.forEach(({ url, comments, likes }) => {
+    const photoItem = pictureTemplateElement.cloneNode(true);
     photoItem.querySelector('.picture__img').src = url;
     photoItem.querySelector('.picture__comments').textContent = comments;
     photoItem.querySelector('.picture__likes').textContent = likes;
@@ -20,6 +16,6 @@ const getPhotoFragment = () => {
   return photoFragment;
 };
 
-const renderPictures = () => picturesContainer.append(getPhotoFragment());
+const renderPictures = (data) => picturesContainerElement.append(getPhotoFragment(data));
 
 export { renderPictures };

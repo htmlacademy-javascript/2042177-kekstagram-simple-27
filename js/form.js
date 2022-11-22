@@ -1,17 +1,53 @@
-const comentLength = {MIN:20, MAX: 140};
+import { sendData } from './api.js';
+import { showSuccessMessage, showErrorMessage } from './messages.js';
 
-const form = document.querySelector('#upload-select-image');
+const CommentLength = {MIN:20, MAX: 140};
 
-const pristine = new Pristine(form, false);
+const formElement = document.querySelector('#upload-select-image');
+const submitButtonElement = formElement.querySelector('.img-upload__submit');
 
-function validateСomment (value) {
-  return value.length >= comentLength.MIN && value.length <= comentLength.MAX;
+const pristine = new Pristine(formElement, {
+  classTo: 'img-upload__text',
+  errorTextParent: 'img-upload__text',
+  errorTextTag: 'div',
+  errorTextClass: 'img-upload__error-message',
+});
+
+function validateComment (value) {
+  return value.length >= CommentLength.MIN && value.length <= CommentLength.MAX;
 }
 
-pristine.addValidator(form.querySelector('.text__description'), validateСomment, `От ${comentLength.MIN} до ${comentLength.MAX} символов`);
+pristine.addValidator(formElement.querySelector('.text__description'), validateComment, `От ${CommentLength.MIN} до ${CommentLength.MAX} символов`);
 
-form.addEventListener('submit', (evt) => {
-  if (!pristine.validate()) {
+const blockSubmitButton = () => {
+  submitButtonElement.disabled = true;
+  submitButtonElement.textContent = 'Сохраняю...';
+};
+
+const unblockSubmitButton = () => {
+  submitButtonElement.disabled = false;
+  submitButtonElement.textContent = 'Опубликовать';
+};
+
+const setUserFormSubmit = (onSuccess) => {
+  formElement.addEventListener('submit', (evt) => {
     evt.preventDefault();
-  }
-});
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      sendData(() => {
+        onSuccess();
+        unblockSubmitButton();
+        showSuccessMessage();
+      },
+      () =>{
+        showErrorMessage();
+        unblockSubmitButton();
+      },
+      new FormData(evt.target),
+      );
+    }
+  });
+};
+
+export { setUserFormSubmit };

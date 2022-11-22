@@ -1,10 +1,11 @@
-import './upload-modal.js';
-import './form.js';
-import './utils.js';
-import './data.js';
-import './pictures.js';
-import './scale.js';
-import './filters.js';
+import { closeModal } from './upload-modal.js';
+import { setUserFormSubmit } from './form.js';
+import { getData } from './api.js';
 import { renderPictures } from './pictures.js';
+import { initScale } from './scale.js';
+import { initFilters } from './filters.js';
 
-renderPictures();
+initScale();
+initFilters();
+getData(renderPictures);
+setUserFormSubmit(closeModal);
