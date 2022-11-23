@@ -8,10 +8,11 @@ const ScaleSettings = {
 const scaleButtonSmallerElement = document.querySelector ('.scale__control--smaller');
 const scaleButtonBiggerElement = document.querySelector ('.scale__control--bigger');
 const scaleInputElement = document.querySelector ('.scale__control--value');
-let currentValue = parseFloat(scaleInputElement.value);
+
 
 const initScale = () => {
   scaleButtonBiggerElement.addEventListener('click', () => {
+    let currentValue = parseFloat(scaleInputElement.value);
     if (currentValue < ScaleSettings.MAX) {
       currentValue += ScaleSettings.STEP;
       previewImageElement.style.transform = `scale(${currentValue / 100})`;
@@ -20,6 +21,7 @@ const initScale = () => {
   });
 
   scaleButtonSmallerElement.addEventListener('click', () => {
+    let currentValue = parseFloat(scaleInputElement.value);
     if (currentValue > ScaleSettings.MIN) {
       currentValue -= ScaleSettings.STEP;
       previewImageElement.style.transform = `scale(${currentValue / 100})`;

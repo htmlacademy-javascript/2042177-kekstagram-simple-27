@@ -2,40 +2,49 @@ import { isEscapeKey } from './utils.js';
 
 const ERROR_SHOW_TIME = 5000;
 
-const showMessage = (type) => {
-  const template = document.querySelector(`#${type}`).content.querySelector(`.${type}`);
-  const message = template.cloneNode(true);
-  const messageCloseButton = message.querySelector(`.${type}__button`);
-  const closeMessage = () => {
-    document.removeEventListener('keydown', onKeydown);
-    message.removeEventListener('click', onMessageClick);
-    messageCloseButton.removeEventListener('click', closeMessage);
-    document.body.removeChild(message);
-  };
+const onKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeMessage();
+  }
+};
 
-  // Использовал Function Declaration поскольку использовал раньше чем объявляется!
-  function onKeydown(evt) {
-    if (isEscapeKey(evt)) {
-      evt.preventDefault();
-      closeMessage();
-    }
+const onMessageClick = (evt) => {
+  const messageElement = document.querySelector('.success, .error');
+  if (evt.target === messageElement) {
+    closeMessage();
   }
-  function onMessageClick(evt) {
-    if (evt.target === message) {
-      closeMessage();
-    }
-  }
+};
+
+const onCloseButtonClick = () => {
+  closeMessage();
+};
+
+// Использовал Function Declaration поскольку используется раньше объявления.
+function closeMessage() {
+  const messageElement = document.querySelector('.success, .error');
+  const messageCloseButton = messageElement.querySelector('.success__button, .error__button');
+  document.removeEventListener('keydown', onKeydown);
+  messageElement.removeEventListener('click', onMessageClick);
+  messageCloseButton.removeEventListener('click', onCloseButtonClick);
+  document.body.removeChild(messageElement);
+}
+
+const showMessage = (type) => {
+  const templateElement = document.querySelector(`#${type}`).content.querySelector(`.${type}`);
+  const messageElement = templateElement.cloneNode(true);
+  const messageCloseButton = messageElement.querySelector(`.${type}__button`);
 
   document.addEventListener('keydown', onKeydown);
-  message.addEventListener('click', onMessageClick);
-  messageCloseButton.addEventListener('click', closeMessage);
-  document.body.append(message);
+  messageElement.addEventListener('click', onMessageClick);
+  messageCloseButton.addEventListener('click', onCloseButtonClick);
+  document.body.append(messageElement);
 };
 
 const showSuccessMessage = () => showMessage('success');
 const showErrorMessage = () => showMessage('error');
 
-const showDataLoadError = (message) => {
+const showDataLoadError = (messageElement) => {
   const mistakeElement = document.createElement('div');
   mistakeElement.style.zIndex = '100';
   mistakeElement.style.position = 'absolute';
@@ -47,7 +56,7 @@ const showDataLoadError = (message) => {
   mistakeElement.style.textAlign = 'center';
   mistakeElement.style.backgroundColor = 'red';
 
-  mistakeElement.textContent = message;
+  mistakeElement.textContent = messageElement;
 
   document.body.append(mistakeElement);
 
