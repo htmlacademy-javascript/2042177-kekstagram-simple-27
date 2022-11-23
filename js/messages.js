@@ -2,32 +2,38 @@ import { isEscapeKey } from './utils.js';
 
 const ERROR_SHOW_TIME = 5000;
 
+const onKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeMessage();
+  }
+};
+
+const onMessageClick = (evt) => {
+  const messageElement = document.querySelector('.success, .error');
+  if (evt.target === messageElement) {
+    closeMessage();
+  }
+};
+
+const onCloseButtonClick = () => {
+  closeMessage();
+};
+
+// Использовал Function Declaration поскольку используется раньше объявления.
+function closeMessage() {
+  const messageElement = document.querySelector('.success, .error');
+  const messageCloseButton = messageElement.querySelector('.success__button, .error__button');
+  document.removeEventListener('keydown', onKeydown);
+  messageElement.removeEventListener('click', onMessageClick);
+  messageCloseButton.removeEventListener('click', onCloseButtonClick);
+  document.body.removeChild(messageElement);
+}
+
 const showMessage = (type) => {
   const templateElement = document.querySelector(`#${type}`).content.querySelector(`.${type}`);
   const messageElement = templateElement.cloneNode(true);
   const messageCloseButton = messageElement.querySelector(`.${type}__button`);
-  const closeMessage = () => {
-    document.removeEventListener('keydown', onKeydown);
-    messageElement.removeEventListener('click', onMessageClick);
-    messageCloseButton.removeEventListener('click', onCloseButtonClick);
-    document.body.removeChild(messageElement);
-  };
-
-  // Использовал Function Declaration поскольку использовал раньше чем объявляется!
-  function onKeydown(evt) {
-    if (isEscapeKey(evt)) {
-      evt.preventDefault();
-      closeMessage();
-    }
-  }
-  function onMessageClick(evt) {
-    if (evt.target === messageElement) {
-      closeMessage();
-    }
-  }
-  function onCloseButtonClick() {
-    closeMessage();
-  }
 
   document.addEventListener('keydown', onKeydown);
   messageElement.addEventListener('click', onMessageClick);
