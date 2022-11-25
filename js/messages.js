@@ -2,42 +2,42 @@ import { isEscapeKey } from './utils.js';
 
 const ERROR_SHOW_TIME = 5000;
 
-const onKeydown = (evt) => {
+const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeMessage();
   }
 };
 
-const onMessageClick = (evt) => {
+const onMessageElementClick = (evt) => {
   const messageElement = document.querySelector('.success, .error');
   if (evt.target === messageElement) {
     closeMessage();
   }
 };
 
-const onCloseButtonClick = () => {
+const onMessageCloseButtonElementClick = () => {
   closeMessage();
 };
 
 // Использовал Function Declaration поскольку используется раньше объявления.
 function closeMessage() {
   const messageElement = document.querySelector('.success, .error');
-  const messageCloseButton = messageElement.querySelector('.success__button, .error__button');
-  document.removeEventListener('keydown', onKeydown);
-  messageElement.removeEventListener('click', onMessageClick);
-  messageCloseButton.removeEventListener('click', onCloseButtonClick);
+  const messageCloseButtonElement = messageElement.querySelector('.success__button, .error__button');
+  document.removeEventListener('keydown', onDocumentKeydown);
+  messageElement.removeEventListener('click', onMessageElementClick);
+  messageCloseButtonElement.removeEventListener('click', onMessageCloseButtonElementClick);
   document.body.removeChild(messageElement);
 }
 
 const showMessage = (type) => {
   const templateElement = document.querySelector(`#${type}`).content.querySelector(`.${type}`);
   const messageElement = templateElement.cloneNode(true);
-  const messageCloseButton = messageElement.querySelector(`.${type}__button`);
+  const messageCloseButtonElement = messageElement.querySelector(`.${type}__button`);
 
-  document.addEventListener('keydown', onKeydown);
-  messageElement.addEventListener('click', onMessageClick);
-  messageCloseButton.addEventListener('click', onCloseButtonClick);
+  document.addEventListener('keydown', onDocumentKeydown);
+  messageElement.addEventListener('click', onMessageElementClick);
+  messageCloseButtonElement.addEventListener('click', onMessageCloseButtonElementClick);
   document.body.append(messageElement);
 };
 

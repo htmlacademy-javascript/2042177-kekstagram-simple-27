@@ -9,7 +9,7 @@ const modalFormElement = document.querySelector('#upload-select-image');
 const textCommentElement = modalElement.querySelector('.text__description');
 
 
-const onKeydown = (evt) => {
+const onDocumentKeydown = (evt) => {
   const message = document.querySelector('.success, .error');
   if (isEscapeKey(evt) && !message) {
     evt.preventDefault();
@@ -20,13 +20,13 @@ const onKeydown = (evt) => {
 const openModal = () => {
   modalElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  document.addEventListener('keydown', onKeydown);
+  document.addEventListener('keydown', onDocumentKeydown);
 };
 
 function closeModal() {
   modalElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  document.removeEventListener('keydown', onKeydown);
+  document.removeEventListener('keydown', onDocumentKeydown);
   modalFormElement.reset();
   textCommentElement.value = '';
   previewImageElement.style.filter = '';
